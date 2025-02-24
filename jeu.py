@@ -100,12 +100,21 @@ class Plateau:
                 self.nombreCout +=1 
 
     def position_chiffre_x(self, nombre_traiter):
-        x = nombre_traiter // self.taille
-        return x
+        if nombre_traiter != 0:
+            x_position = nombre_traiter % self.taille
+            if x_position == 0:
+                return  self.taille
+            else:
+                return x_position - 1
+        else:
+            return self.taille - 1
 
     def position_chiffre_y(self, nombre_traiter):
-        y = nombre_traiter % self.taille
-        return y
+        if nombre_traiter != 0: 
+            y_position = nombre_traiter // self.taille
+            return y_position
+        else: 
+            return self.taille - 1
 
     def heuristique(self,plateau):
         distance = 0
@@ -174,8 +183,12 @@ class Plateau:
                     self.nombreCout +=1
                     self.plateau = plateau
                     historique_plateau.append(plateau)
-                    historique.append({"f" : self.nombreCout + possibilite[0] ,"g" : self.nombreCout, "h" : possibilite[0], "etat": plateau})
+                    f = self.nombreCout + possibilite[0]
+                    g = self.nombreCout
+                    h = possibilite[0]
+                    historique.append({"f" : f,"g" : g, "h" : h, "etat": plateau})
             i += 1
+        print("Terminé")
 
 
 
@@ -199,9 +212,10 @@ def jeu():
 
 
 def solve_astar():
-    plateau = Plateau(3)
+    plateau = Plateau(2)
     plateau.afficher()
     plateau.astar_solution()
+    plateau.afficher()
 
 
 if __name__ == "__main__":
