@@ -3,6 +3,7 @@
 import random
 import keyboard
 import heapq
+import copy
 
 
 # Structure du jeu  :
@@ -145,8 +146,8 @@ class Plateau:
                 plateau_teste[new_x][new_y] = 0
                 heuristique = self.heuristique(plateau_teste)
                 resultats.append((heuristique, plateau_teste, direction))
-        
-        return resultats
+            resultat_trier = sorted(resultats, key=lambda x: x[0])
+        return resultat_trier
 
 
     def astar_solution(self):
@@ -154,11 +155,27 @@ class Plateau:
         i = 0
         
         historique = []
-        dico_historique = {"f","g", "h", "état"}
+        historique_plateau = []
+        plateau = copy.deepcopy(self.plateau)
+        h = self.heuristique(self.plateau)
+        historique.append({"f" : h ,"g" : 0, "h" : h, "etat": copy.deepcopy(self.plateau)})
+        
+        historique_plateau.append(plateau)
+        print(historique)
 
-        while self.plateau != self.solution and i < 100:
+        while self.plateau != self.solution and i < 150:
             #Faire le teste des quatre commande : 
-            dico_historique = {"f" = ,"g" = , "h" = self.teste_bas[0], "état" = self.teste_bas[1]}
+            liste = self.teste_deplacement()
+            print(liste)
+
+            for possibilite in liste:
+                if possibilite[1] not in historique_plateau:
+                    plateau = copy.deepcopy(possibilite[1])
+                    self.nombreCout +=1
+                    self.plateau = plateau
+                    historique_plateau.append(plateau)
+                    historique.append({"f" : self.nombreCout + possibilite[0] ,"g" : self.nombreCout, "h" : possibilite[0], "etat": plateau})
+            i += 1
 
 
 
