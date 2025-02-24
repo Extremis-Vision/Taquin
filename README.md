@@ -26,10 +26,7 @@ Le **jeu de Taquin** est un puzzle où l'objectif est de réarranger les tuiles 
 
 ## 🗂️ Structure du Code
 
-- **`taquin.py`** : Script principal pour exécuter le jeu.
-- **`plateau.py`** : Gère la logique du plateau et des mouvements.
-- **`algo_astar.py`** : Contient l'implémentation de l'algorithme A* pour résoudre le puzzle.
-- **`q_learning.py`** : Système Q-learning pour l'apprentissage automatique.
+- **`jeu.py`** : Script principal pour exécuter le jeu.
 
 ---
 
