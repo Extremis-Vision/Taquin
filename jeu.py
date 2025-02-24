@@ -115,13 +115,21 @@ class Plateau:
             return y_position
         else: 
             return self.taille - 1
+        
+    def position (self,nombre):
+        for y in range(self.taille):
+            for x in range(self.taille):
+                if nombre == self.solution[y][x]:
+                    return [x,y]
 
     def heuristique(self,plateau):
         distance = 0
 
         for x in range(self.taille):
             for y in range(self.taille):
-                distance += abs(x - self.position_chiffre_x(plateau[x][y])) + abs (y - self.position_chiffre_y(plateau[x][y]))
+                position_voulu = self.position(plateau[x][y])
+                print("nombre : ",plateau[x][y],"position :",position_voulu)
+                distance += abs(x - position_voulu[0]) + abs (y - position_voulu[1])
         return distance
     
     def coord_zero(self):
@@ -172,7 +180,7 @@ class Plateau:
         historique_plateau.append(plateau)
         print(historique)
 
-        while self.plateau != self.solution and i < 150:
+        while self.plateau != self.solution and i < 10:
             #Faire le teste des quatre commande : 
             liste = self.teste_deplacement()
             print(liste)
