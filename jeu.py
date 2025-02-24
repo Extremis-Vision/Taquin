@@ -124,45 +124,30 @@ class Plateau:
                         position_zero.append(y)
                         return [x, y]
                         
-    def teste_bas(self):
+    def teste_deplacement(self):
         position_zero = self.coord_zero()
-        # Teste Bas
-        if not (position_zero[0] == 0):
-            plateau_teste_b = [row[:] for row in self.plateau]
-            plateau_teste_b[position_zero[0]][position_zero[1]] = plateau_teste_b[position_zero[0] - 1][position_zero[1]]
-            plateau_teste_b[position_zero[0] - 1][position_zero[1]] = 0
-            self.bas_heuristique = self.heuristique(plateau_teste_b)
-            self.bas_plateau = plateau_teste_b
-    
-    def teste_haut(self):
-        position_zero = self.coord_zero()
-        # Teste Haut
-        if not(position_zero[0] == 2):
-            plateau_teste_h = [row[:] for row in self.plateau]
-            plateau_teste_h[position_zero[0]][position_zero[1]] = plateau_teste_h[position_zero[0] + 1][position_zero[1]]
-            plateau_teste_h[position_zero[0] + 1][position_zero[1]] = 0
-            self.haut_heuristique = self.heuristique(plateau_teste_h)
-            self.haut_plateau = plateau_teste_h
+        
+        deplacements = {
+            "bas": (-1, 0),
+            "haut": (1, 0),
+            "droite": (0, 1),
+            "gauche": (0, -1)
+        }
 
-    def teste_droite(self):
-        position_zero = self.coord_zero()
-        # Teste Droite
-        if not(position_zero[1] == 2):
-            plateau_teste_d = [row[:] for row in self.plateau]
-            plateau_teste_d[position_zero[0]][position_zero[1]] = plateau_teste_d[position_zero[0]][position_zero[1] + 1]
-            plateau_teste_d[position_zero[0]][position_zero[1] + 1] = 0
-            self.droite_heuristique = self.heuristique(plateau_teste_d)
-            self.droite_plateau = plateau_teste_d
+        resultats = []
+        
+        for direction, (dx, dy) in deplacements.items():
+            new_x, new_y = position_zero[0] + dx, position_zero[1] + dy
+            
+            if 0 <= new_x < self.taille and 0 <= new_y < self.taille:
+                plateau_teste = [row[:] for row in self.plateau]
+                plateau_teste[position_zero[0]][position_zero[1]] = plateau_teste[new_x][new_y]
+                plateau_teste[new_x][new_y] = 0
+                heuristique = self.heuristique(plateau_teste)
+                resultats.append((heuristique, plateau_teste, direction))
+        
+        return resultats
 
-    def teste_gauche(self):
-        position_zero = self.coord_zero()
-        # Teste Gauche
-        if not(position_zero[1] == 0): 
-            plateau_teste_g = [row[:] for row in self.plateau]
-            plateau_teste_g[position_zero[0]][position_zero[1]] = plateau_teste_g[position_zero[0]][position_zero[1] - 1]
-            plateau_teste_g[position_zero[0]][position_zero[1] - 1] = 0
-            self.gauche_heuristique = self.heuristique(plateau_teste_g)
-            self.gauche_plateau = plateau_teste_g
 
     def astar_solution(self):
         print("Lancement du teste de la résolution astar")
