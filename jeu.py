@@ -99,7 +99,7 @@ class Plateau:
                 self.nombreCout +=1 
 
     def position_chiffre_x(self, nombre_traiter):
-        x = nombre_traiter / self.taille
+        x = nombre_traiter // self.taille
         return x
 
     def position_chiffre_y(self, nombre_traiter):
@@ -114,7 +114,7 @@ class Plateau:
                 distance += abs(x - self.position_chiffre_x(plateau[x][y])) + abs (y - self.position_chiffre_y(plateau[x][y]))
         return distance
     
-    def astar(self):
+    def coord_zero(self):
         position_zero = []
         for x in range(self.taille):
             if 0 in self.plateau[x]:
@@ -122,52 +122,58 @@ class Plateau:
                 for y in range(self.taille):
                     if 0 == self.plateau[x][y]:
                         position_zero.append(y)
-
-        dico_solution_possible = []
-
-        dico_solution_possible = []
-
+                        return [x, y]
+                        
+    def teste_bas(self):
+        position_zero = self.coord_zero()
         # Teste Bas
         if not (position_zero[0] == 0):
             plateau_teste_b = [row[:] for row in self.plateau]
             plateau_teste_b[position_zero[0]][position_zero[1]] = plateau_teste_b[position_zero[0] - 1][position_zero[1]]
             plateau_teste_b[position_zero[0] - 1][position_zero[1]] = 0
-            dico_solution_possible.append([self.heuristique(plateau_teste_b), plateau_teste_b])
-
+            self.bas_heuristique = self.heuristique(plateau_teste_b)
+            self.bas_plateau = plateau_teste_b
+    
+    def teste_haut(self):
+        position_zero = self.coord_zero()
         # Teste Haut
         if not(position_zero[0] == 2):
             plateau_teste_h = [row[:] for row in self.plateau]
             plateau_teste_h[position_zero[0]][position_zero[1]] = plateau_teste_h[position_zero[0] + 1][position_zero[1]]
             plateau_teste_h[position_zero[0] + 1][position_zero[1]] = 0
-            dico_solution_possible.append([self.heuristique(plateau_teste_h), plateau_teste_h])
+            self.haut_heuristique = self.heuristique(plateau_teste_h)
+            self.haut_plateau = plateau_teste_h
 
+    def teste_droite(self):
+        position_zero = self.coord_zero()
         # Teste Droite
         if not(position_zero[1] == 2):
             plateau_teste_d = [row[:] for row in self.plateau]
             plateau_teste_d[position_zero[0]][position_zero[1]] = plateau_teste_d[position_zero[0]][position_zero[1] + 1]
             plateau_teste_d[position_zero[0]][position_zero[1] + 1] = 0
-            dico_solution_possible.append([self.heuristique(plateau_teste_d), plateau_teste_d])
+            self.droite_heuristique = self.heuristique(plateau_teste_d)
+            self.droite_plateau = plateau_teste_d
 
+    def teste_gauche(self):
+        position_zero = self.coord_zero()
         # Teste Gauche
         if not(position_zero[1] == 0): 
             plateau_teste_g = [row[:] for row in self.plateau]
             plateau_teste_g[position_zero[0]][position_zero[1]] = plateau_teste_g[position_zero[0]][position_zero[1] - 1]
             plateau_teste_g[position_zero[0]][position_zero[1] - 1] = 0
-            dico_solution_possible.append([self.heuristique(plateau_teste_g), plateau_teste_g])
-
-
-        print(dico_solution_possible)
-        self.plateau = dico_solution_possible[0][1]
-        self.nombreCout += 1
-        print("Astar coup : ", self.nombreCout)
-        self.afficher()
+            self.gauche_heuristique = self.heuristique(plateau_teste_g)
+            self.gauche_plateau = plateau_teste_g
 
     def astar_solution(self):
         print("Lancement du teste de la résolution astar")
         i = 0
-        while self.plateau != self.solution and i < 10:
-            self.astar()
-            i +=1
+        
+        historique = []
+        dico_historique = {"f","g", "h", "état"}
+
+        while self.plateau != self.solution and i < 100:
+            #Faire le teste des quatre commande : 
+            dico_historique = {"f" = ,"g" = , "h" = self.teste_bas[0], "état" = self.teste_bas[1]}
 
 
 
